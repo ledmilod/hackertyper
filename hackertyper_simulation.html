@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hackertyper Simulation</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: 'Courier New', monospace;
+            font-size: 70px;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: background-color 0.5s;
+        }
+        pre {
+            margin: 0;
+            padding: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .command {
+            opacity: 0;
+        }
+        .hacked-screen {
+            background-color: red;
+            color: white;
+            font-size: 500px;
+            padding: 100px;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <pre id="terminal"></pre>
+
+    <script>
+        var commands = [
+            "Initializing system...",
+            "Loading mainframe...",
+            "Connecting to secure server...",
+            "Establishing secure tunnel...",
+            "Bypassing firewall...",
+            "Accessing root directory...",
+            "Establishing connection to database...",
+            "Scanning for vulnerabilities...",
+            "Analyzing security protocols...",
+            "Injecting code...",
+            "Exploiting flaw in system...",
+            "Injecting SQL commands...",
+            "Bypassing authentication...",
+            "Running privilege escalation...",
+            "Establishing admin access...",
+            "Root access granted.",
+            "Extracting sensitive data...",
+            "Data transfer in progress...",
+            "Deploying payload...",
+            "Hacking into satellite system...",
+            "Overriding control of satellite...",
+            "Control of satellite achieved.",
+            "Accessing private communications...",
+            "Decrypting classified files...",
+            "Files decrypted successfully.",
+            "Uploading malware to target system...",
+            "Malware upload complete.",
+            "Executing remote commands...",
+            "Accessing financial accounts...",
+            "Transferring funds...",
+            "Funds successfully transferred.",
+            "Uploading logs to cloud storage...",
+            "System compromised.",
+            "System breach complete.",
+            "Executing denial-of-service attack...",
+            "Network under attack.",
+            "Disabling target systems...",
+            "Attack successful.",
+            "Overriding backup systems...",
+            "Backup disabled.",
+            "Deleting all traces...",
+            "Cleanup successful.",
+            "Reconfiguring system settings...",
+            "Changing user permissions...",
+            "Overriding security software...",
+            "Removing security monitoring tools...",
+            "Deleting logs...",
+            "Closing ports...",
+            "Obfuscating data...",
+            "Breaking encryption...",
+            "Exfiltrating data...",
+            "Initiating data wipe...",
+            "Wipe complete.",
+            "Deploying keylogger...",
+            "Keylogger installed.",
+            "Accessing email server...",
+            "Reading confidential emails...",
+            "Emails read successfully.",
+            "Gaining access to backup systems...",
+            "Backup system breached.",
+            "Sending phishing emails...",
+            "Phishing attack successful.",
+            "Manipulating financial records...",
+            "Records updated.",
+            "Injecting rogue code...",
+            "Code execution successful.",
+            "Bypassing antivirus protection...",
+            "Antivirus disabled.",
+            "Accessing webcam feed...",
+            "Webcam feed captured.",
+            "Monitoring user activity...",
+            "Activity logged.",
+            "Tracking GPS location...",
+            "Location data obtained.",
+            "Spreading malware across network...",
+            "Malware propagation complete.",
+            "Activating remote shell...",
+            "Remote shell connection established.",
+            "Injecting malicious script into web server...",
+            "Script injected successfully.",
+            "Accessing target server...",
+            "Server breached.",
+            "Downloading sensitive documents...",
+            "Documents downloaded.",
+            "Encrypting all files...",
+            "Files encrypted.",
+            "Ransomware deployed.",
+            "Demanding ransom...",
+            "Ransom message sent.",
+            "Scanning network for other targets...",
+            "Additional targets found.",
+            "Deploying more malware...",
+            "Second wave of malware deployed.",
+            "Running port scan...",
+            "Open ports detected.",
+            "Sending packet injection...",
+            "Packets injected.",
+            "Stealing cookies...",
+            "Cookies stolen.",
+            "Modifying network traffic...",
+            "Traffic manipulation successful.",
+            "Overriding DNS settings...",
+            "DNS modified.",
+            "Injecting rogue script into browser...",
+            "Browser script injection successful.",
+            "Accessing internal documentation...",
+            "Documentation downloaded.",
+            "Modifying system files...",
+            "System files modified.",
+            "Injecting code into system process...",
+            "System process hijacked.",
+            "Bypassing security mechanisms...",
+            "Security bypass complete.",
+            "Changing system configurations...",
+            "System configuration modified.",
+            "Hijacking system services...",
+            "System service hijacked.",
+            "Accessing system memory...",
+            "Memory dump complete.",
+            "Injecting rootkit...",
+            "Rootkit installed.",
+            "Evading antivirus detection...",
+            "Antivirus evasion successful.",
+            "Disabling firewall...",
+            "Firewall disabled.",
+            "Running exploit toolkit...",
+            "Exploit executed.",
+            "Using zero-day vulnerability...",
+            "Zero-day exploit successful.",
+            "Escalating privileges...",
+            "Privileges escalated.",
+            "Establishing persistence...",
+            "Persistence achieved.",
+            "Deleting backup files...",
+            "Backup files deleted.",
+            "Creating hidden backdoor...",
+            "Backdoor created.",
+            "Escalating system privileges...",
+            "System privileges escalated.",
+            "Taking control of network...",
+            "Network control achieved.",
+            "Redirecting traffic...",
+            "Traffic redirected.",
+            "Manipulating system clock...",
+            "Clock manipulation successful.",
+            "Bypassing two-factor authentication...",
+            "Two-factor authentication bypassed.",
+            "Initiating lateral movement...",
+            "Lateral movement successful.",
+            "Launching man-in-the-middle attack...",
+            "MITM attack successful.",
+            "Spreading across local network...",
+            "Local network breach complete.",
+            "Decrypting password hashes...",
+            "Password hashes decrypted.",
+            "Gaining access to cloud accounts...",
+            "Cloud accounts compromised.",
+            "Initiating self-destruct sequence...",
+            "Self-destruct initiated."
+        ];
+
+        var terminal = document.getElementById('terminal');
+        var index = 0;
+
+        // Funktion zum simulieren der Befehlsanzeige
+        function typeCommand() {
+            if (index < commands.length) {
+                var command = commands[index];
+                var commandElement = document.createElement('div');
+                commandElement.textContent = command;
+                terminal.appendChild(commandElement);
+                index++;
+                if (index < commands.length) {
+                    setTimeout(typeCommand, 100); // Nächster Befehl nach einer kleinen Verzögerung
+                } else {
+                    // Zeige "Hacked" Bildschirm nach allen Befehlen
+                    showHackedScreen();
+                }
+            }
+        }
+
+        function showHackedScreen() {
+            document.body.innerHTML = '<div class="hacked-screen">HACKED</div>';
+        }
+
+        // Event-Listener für Tasteneingabe
+        document.addEventListener('keydown', function (e) {
+            if (e.key === ' ') { // Leertaste zum Starten der Befehle
+                typeCommand();
+            }
+        });
+    </script>
+</body>
+</html>
